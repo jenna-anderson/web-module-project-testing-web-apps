@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DisplayComponent from './DisplayComponent';
+import useErrorValidation from './hooks/useErrorValidation';
 
 const formData = {
   firstName: "",
@@ -18,21 +19,7 @@ const errorData = {
 const ContactForm = () => {
   const [displayData, setDisplayData] = useState(false);
   const [form, setForm] = useState(formData);
-  const [errors, setErrors] = useState(errorData);
-
-  const errorHandling = (fieldName, fieldValue) => {
-    if (fieldName === "firstName" && fieldValue.length < 5)
-      return `${fieldName} must have at least 5 characters.`;
-
-    const emailRegex = /(.*)@(.*)\.(.+)/g;
-    if (fieldName === "email" && !fieldValue.match(emailRegex))
-      return `${fieldName} must be a valid email address.`;
-
-    if (fieldName !== "message" && fieldValue === "")
-      return `${fieldName} is a required field.`;
-    
-    return "";
-  }
+  const [errors, setErrors, errorHandling] = useErrorValidation(errorData);
 
 
   const handleSubmit = (e) => {
